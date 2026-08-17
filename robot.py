@@ -56,6 +56,10 @@ class Robot(ABC):
             raise InsufficientBatteryError(self.name, amount, self.battery)
         self.battery -= amount
 
+    @classmethod
+    def from_config(cls, config):
+        return cls(name=config["name"], battery=config.get("battery", 100))
+
     @abstractmethod
     def perform_task(self):
         pass
@@ -99,7 +103,7 @@ def run_task_safely(robot, **kwargs):
         print(f"[{robot.name}] Current battery: {robot.battery}%")
 
 if __name__ == "__main__":
-    blender = CoffeeBlenderRobot("Brew-Bot", battery=100)
-    print(CoffeeBlenderRobot.perform_task.__name__)
-    result = blender.perform_task()
-    print(result)
+    config = {"name": "Config-Bot", "battery": 30}
+    blender_from_config = CoffeeBlenderRobot.from_config(config)
+    print(str(blender_from_config))
+    print(type(blender_from_config))
