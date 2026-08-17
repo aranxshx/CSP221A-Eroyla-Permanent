@@ -69,9 +69,14 @@ class DispenserRobot(Robot):
         self.cup_supply -= 1
         return f"{self.name} dispensed a cup. Cups remaining: {self.cup_supply}."
 
+def fleet_report(robots):
+    print("--- Fleet Report ---")
+    for robot in robots:
+        print(str(robot))
+
 if __name__ == "__main__":
+    blender = CoffeeBlenderRobot("Brew-Bot", battery=100)
     dispenser = DispenserRobot("Cup-Bot", battery=100)
-    print(str(dispenser))
-    result = dispenser.perform_task()
-    print(result)
-    print(dispenser.battery)
+
+    fleet = [blender, dispenser]
+    fleet_report(fleet)
