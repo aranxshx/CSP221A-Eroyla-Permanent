@@ -1,3 +1,6 @@
+import logging
+
+logging.basicConfig(level=logging.INFO)
 from abc import ABC, abstractmethod
 
 class InsufficientBatteryError(Exception):
@@ -74,9 +77,24 @@ def fleet_report(robots):
     for robot in robots:
         print(str(robot))
 
+def run_task_safely(robot, **kwargs):
+    try:
+        result = robot.perform_task(**kwargs)
+    except InsufficientBatteryError as e:
+        logging.error(e)
+    else:
+        print(result)
+    finally:
+        print(f"[{robot.name}] Current battery: {robot.battery}%")
+
 if __name__ == "__main__":
     blender = CoffeeBlenderRobot("Brew-Bot", battery=100)
-    dispenser = DispenserRobot("Cup-Bot", battery=100)
+    weak_dispenser = DispenserRobot("Weak-Bot", battery=5)
 
-    fleet = [blender, dispenser]
+    fleet = [blender, weak_dispenser]
     fleet_report(fleet)
+
+    print()
+    run_task_safely(blender)
+    print()
+    run_task_safely(weak_dispenser)
