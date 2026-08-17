@@ -71,7 +71,7 @@ class CoffeeBlenderRobot(Robot):
 
     @log_action 
     def perform_task(self):
-        cost = 50
+        cost = 20
         self.use_battery(cost)
         self.bean_supply -= 5
         return f"{self.name} brewed a coffee. Beans remaining: {self.bean_supply}."
