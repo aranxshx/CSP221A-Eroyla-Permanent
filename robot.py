@@ -1,5 +1,14 @@
 from abc import ABC, abstractmethod
 
+class InsufficientBatteryError(Exception):
+    def __init__(self, name, required, available):
+        message = f"{name} needs {required}% battery for this task, but only has {available}%."
+        super().__init__(message)
+        self.name = name
+        self.required = required
+        self.available = available
+
+
 class Robot(ABC):
     manufacturer = "Ritwal"
     population = 0
@@ -29,9 +38,14 @@ class Robot(ABC):
     def __repr__(self):
         return f"{self.__class__.__name__}(name={self.name!r}, battery={self.battery!r})"
 
+    def use_battery(self, amount):
+        if amount > self.battery:
+            raise InsufficientBatteryError(self.name, amount, self.battery)
+        self.battery -= amount
+
     @abstractmethod
     def perform_task(self):
         pass
 
 if __name__ == "__main__":
-    r1 = Robot("Bot1", battery=150)
+    pass 
