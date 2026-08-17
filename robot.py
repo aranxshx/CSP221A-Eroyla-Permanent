@@ -2,6 +2,16 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 from abc import ABC, abstractmethod
+from functools import wraps
+
+def log_action(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        logging.info(f"{self.name} is starting task: {func.__name__}...")
+        result = func(self, *args, **kwargs)
+        logging.info(f"{self.name} finished task: {func.__name__}")
+        return result
+    return wrapper
 
 class InsufficientBatteryError(Exception):
     def __init__(self, name, required, available):
@@ -55,6 +65,7 @@ class CoffeeBlenderRobot(Robot):
         super().__init__(name, battery)
         self.bean_supply = bean_supply
 
+    @log_action 
     def perform_task(self):
         cost = 20
         self.use_battery(cost)
@@ -89,12 +100,6 @@ def run_task_safely(robot, **kwargs):
 
 if __name__ == "__main__":
     blender = CoffeeBlenderRobot("Brew-Bot", battery=100)
-    weak_dispenser = DispenserRobot("Weak-Bot", battery=5)
-
-    fleet = [blender, weak_dispenser]
-    fleet_report(fleet)
-
-    print()
-    run_task_safely(blender)
-    print()
-    run_task_safely(weak_dispenser)
+    print(CoffeeBlenderRobot.perform_task.__name__)
+    result = blender.perform_task()
+    print(result)
