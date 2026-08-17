@@ -102,8 +102,31 @@ def run_task_safely(robot, **kwargs):
     finally:
         print(f"[{robot.name}] Current battery: {robot.battery}%")
 
+class BuggyOrderTracker:
+    orders = []
+
+    def add_order(self, order):
+        self.orders.append(order)
+
+
+class FixedOrderTracker:
+    def __init__(self):
+        self.orders = []
+
+    def add_order(self, order):
+        self.orders.append(order)
+
 if __name__ == "__main__":
-    config = {"name": "Config-Bot", "battery": 30}
-    blender_from_config = CoffeeBlenderRobot.from_config(config)
-    print(str(blender_from_config))
-    print(type(blender_from_config))
+    print("--- Buggy version ---")
+    t1 = BuggyOrderTracker()
+    t2 = BuggyOrderTracker()
+    t1.add_order("Order A")
+    print("t1 orders:", t1.orders)
+    print("t2 orders:", t2.orders)
+
+    print("--- Fixed version ---")
+    f1 = FixedOrderTracker()
+    f2 = FixedOrderTracker()
+    f1.add_order("Order A")
+    print("f1 orders:", f1.orders)
+    print("f2 orders:", f2.orders)
