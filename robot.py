@@ -47,5 +47,21 @@ class Robot(ABC):
     def perform_task(self):
         pass
 
+class CoffeeBlenderRobot(Robot):
+    def __init__(self, name, battery=100, bean_supply=50):
+        super().__init__(name, battery)
+        self.bean_supply = bean_supply
+
+    def perform_task(self):
+        cost = 20
+        self.use_battery(cost)
+        self.bean_supply -= 5
+        return f"{self.name} brewed a coffee. Beans remaining: {self.bean_supply}."
+
 if __name__ == "__main__":
-    pass 
+    blender = CoffeeBlenderRobot("Brew-Bot", battery=100)
+    print(str(blender))
+    print(repr(blender))
+    result = blender.perform_task()
+    print(result)
+    print(blender.battery)
