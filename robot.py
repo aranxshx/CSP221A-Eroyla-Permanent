@@ -58,10 +58,20 @@ class CoffeeBlenderRobot(Robot):
         self.bean_supply -= 5
         return f"{self.name} brewed a coffee. Beans remaining: {self.bean_supply}."
 
+class DispenserRobot(Robot):
+    def __init__(self, name, battery=100, cup_supply=50):
+        super().__init__(name, battery)
+        self.cup_supply = cup_supply
+
+    def perform_task(self):
+        cost = 10
+        self.use_battery(cost)
+        self.cup_supply -= 1
+        return f"{self.name} dispensed a cup. Cups remaining: {self.cup_supply}."
+
 if __name__ == "__main__":
-    blender = CoffeeBlenderRobot("Brew-Bot", battery=100)
-    print(str(blender))
-    print(repr(blender))
-    result = blender.perform_task()
+    dispenser = DispenserRobot("Cup-Bot", battery=100)
+    print(str(dispenser))
+    result = dispenser.perform_task()
     print(result)
-    print(blender.battery)
+    print(dispenser.battery)
