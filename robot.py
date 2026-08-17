@@ -20,9 +20,13 @@ class Robot:
         else:
             self._battery = value
 
+    def __str__(self):
+        return f"{self.name} ({self.battery}% battery)"
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(name={self.name!r}, battery={self.battery!r})"
+
 if __name__ == "__main__":
     r1 = Robot("Bot1", battery=150)
-    r2 = Robot("Bot2", battery=-20)
-    print(r1.battery)
-    print(r2.battery)
-    print(Robot.population)
+    print(str(r1))
+    print(repr(r1))
